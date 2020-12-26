@@ -1,23 +1,34 @@
 import asyncio
 from asyncio import tasks
 import aiohttp #pip install aiohttp
-import requests
 from lxml import etree
-x='498237'
-async def fetch(session,url):
-    async with session.get(url) as response:
-        html=await response.text()
-        return html
-async def parser_content(html):
-    selector = etree.HTML(html)
-    title=str(selector.xpath('//*[@id="chapter{}"]/div[3]/div[2]/h1/text()'.format(x))[0])
-    print(title)
-async def download_content(url):
-    async with aiohttp.ClientSession() as session:
-        html=await fetch(session,url)
-        await parser_content(html)
-urls=[
-    asyncio.ensure_future(download_content('https://www.xinshuhaige.com/34953/{}.html'.format(x)))
-]
+for x in range(498232,498242):
+    async def fetch(session,url):
+        async with session.get(url) as response:
+            html=await response.text()
+            return html
+    async def parser_content(html):
+        selector = etree.HTML(html)
+        title=str(selector.xpath("//div[@class='read_title']//h1[1]/text()")[0])
+        print(x,title)
+    async def download_content(url):
+        async with aiohttp.ClientSession() as session:
+            html=await fetch(session,url)        
+            await parser_content(html)
+    tasks=[
+        asyncio.ensure_future(download_content('https://www.xinshuhaige.com/34953/{}.html'.format(x)))
+    ]
 loop=asyncio.get_event_loop()
-loop.run_until_complete(asyncio.gather(*urls))
+loop.run_until_complete(asyncio.gather(*tasks))
+
+"""
+运行效果如下：
+498241 第1章这辈子只能有我一个
+498241 第6章毁约
+498241 第5章重逢的偏执
+498241 第7章一个字都别说
+498241 第2章约定
+498241 第3章他的美丽
+498241 第10章再次见面
+498241 第9章叶南卿何人
+"""
