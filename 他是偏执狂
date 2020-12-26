@@ -1,0 +1,23 @@
+import asyncio
+from asyncio import tasks
+import aiohttp #pip install aiohttp
+import requests
+from lxml import etree
+x='498237'
+async def fetch(session,url):
+    async with session.get(url) as response:
+        html=await response.text()
+        return html
+async def parser_content(html):
+    selector = etree.HTML(html)
+    title=str(selector.xpath('//*[@id="chapter{}"]/div[3]/div[2]/h1/text()'.format(x))[0])
+    print(title)
+async def download_content(url):
+    async with aiohttp.ClientSession() as session:
+        html=await fetch(session,url)
+        await parser_content(html)
+urls=[
+    asyncio.ensure_future(download_content('https://www.xinshuhaige.com/34953/{}.html'.format(x)))
+]
+loop=asyncio.get_event_loop()
+loop.run_until_complete(asyncio.gather(*urls))
