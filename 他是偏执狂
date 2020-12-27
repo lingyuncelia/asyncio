@@ -6,11 +6,13 @@ for x in range(498232,498242):
     async def fetch(session,url):
         async with session.get(url) as response:
             html=await response.text()
-            return html
+            return (html)
     async def parser_content(html):
         selector = etree.HTML(html)
         title=str(selector.xpath("//div[@class='read_title']//h1[1]/text()")[0])
         print(x,title)
+        with open(title+'.txt',mode='w',encoding='utf-8') as f:
+            f.write(title)
     async def download_content(url):
         async with aiohttp.ClientSession() as session:
             html=await fetch(session,url)        
