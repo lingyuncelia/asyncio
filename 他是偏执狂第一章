@@ -7,7 +7,7 @@ def inputme(s,r):    #记事本，输入内容
 url='https://www.xinshuhaige.com/34953/498232.html'
 r=requests.get(url).content
 selector = etree.HTML(r)
-c1=str(selector.xpath('//*[@id="con498232"]/text()[position()>1]'))
+c1=str(selector.xpath("//div[@class='tuijian']/following-sibling::div[1]/text()"))
 a=r"['\xa0\xa0\xa0\xa0" #替换 '\xa0\xa0\xa0\xa0
 c2=c1.replace(a,'')
 b=r"\n', "
@@ -16,8 +16,9 @@ d=r"        ', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n      ']"
 c4=c3.replace(d,'')
 e=r"'\xa0\xa0\xa0\xa0"
 c5=c4.replace(e,'')
-print(c5)
-
+f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 新书海阁小说网(xinshuhaige.com)”查找最新章节！\n        ', "
+c6=c5.replace(f,'')
+print(c6)
 """
 “琪琪，我这辈子只有你一个，所以你这辈子也只可以有我一个。”偌大而洁白的床上，少年精瘦结实的身躯压着身下的少女，精致的薄唇流连在少女的锁骨上。“放开我。”少女的声音带着一丝喘息。“不喜欢我吗？”亲吻的动作因此而停下，下颚缓
 缓地抬了起来，少年那双漂亮的眸子紧紧地盯着眼前的少女。那是一种很专注的眼神，瞳孔中，眸色中，全都印着她的容颜，就好像他的眼中只有她的存在。“那你喜欢谁？”他的眉微微扬起，秀气却也阴霾。少女的心倏然一颤，没有吭声。下一刻
