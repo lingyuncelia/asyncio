@@ -1,0 +1,46 @@
+from multiprocessing import Process,Pool
+def a(x):
+    print("this is a start")
+    print(x)
+    print("this is a stop")
+def b(num):
+    return(num)
+if __name__=='__main__':
+    p=Pool(2)
+    for i in range(10):
+        p.apply_async(b,args=(i,),callback=a)
+    p.close()
+    p.join()
+    
+"""
+this is a start
+0
+this is a stop 
+this is a start
+1
+this is a stop 
+this is a start
+2
+this is a stop
+this is a start
+3
+this is a stop
+this is a start
+4
+this is a stop
+this is a start
+5
+this is a stop
+this is a start
+6
+this is a stop
+this is a start
+7
+this is a stop
+this is a start
+8
+this is a stop
+this is a start
+9
+this is a stop
+"""
