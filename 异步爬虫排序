@@ -1,0 +1,72 @@
+from multiprocessing import Pool
+import time
+t1=time.time()
+from lxml import etree
+import aiohttp
+import asyncio
+def inputme(s,r):    #记事本，输入内容
+    f=open(r,'a+')
+    f.writelines(s)
+    f.write('\n')
+urls=['https://www.xinshuhaige.com/34953/{}.html'.format(x) for x in range(498232,498242)]
+htmls = []
+sem = asyncio.Semaphore(10) # 信号量，控制协程数，防止爬的过快
+'''
+提交请求获取AAAI网页html
+'''
+async def get_html(url):
+    with(await sem):
+        # async with是异步上下文管理器
+        async with aiohttp.ClientSession() as session:  # 获取session
+            async with session.request('GET', url) as resp:  # 提出请求
+                html = await resp.read() # 直接获取到bytes
+                htmls.append(html)
+                inputme(url,'k:/python/url.txt')
+'''
+协程调用方，请求网页
+'''
+def main_get_html():
+    loop = asyncio.get_event_loop()           # 获取事件循环
+    tasks = [get_html(url) for url in urls]  # 把所有任务放到一个列表中
+    loop.run_until_complete(asyncio.wait(tasks)) # 激活协程
+    loop.close()  # 关闭事件循环
+'''
+使用多进程解析html
+'''
+def multi_parse_html(html,cnt):
+    selector = etree.HTML(html)
+    title=str(selector.xpath("//div[@class='read_title']//h1[1]/text()")[0])
+    c1=str(selector.xpath("//div[@class='tuijian']/following-sibling::div[1]/text()"))
+    a=r"['\xa0\xa0\xa0\xa0" #替换 '\xa0\xa0\xa0\xa0
+    c2=c1.replace(a,'')
+    b=r"\n', "
+    c3=c2.replace(b,'')
+    d=r"        ', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n      ']"
+    c4=c3.replace(d,'')
+    e=r"'\xa0\xa0\xa0\xa0"
+    c5=c4.replace(e,'')
+    f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 新书海阁小说网(xinshuhaige.com)”查找最新章节！\n        ', "
+    c6=c5.replace(f,'')
+    inputme(title,'k:/python/title.txt')
+    with open(title+'.txt',mode='w',encoding='utf-8') as f:
+        f.write(title)
+        f.write('\n')
+        f.write(c6)
+'''
+多进程调用总函数，解析html
+'''
+def main_parse_html():
+    p = Pool(8)
+    i = 0
+    for html in htmls:
+        i += 1
+        p.apply_async(multi_parse_html,args=(html,i))
+    p.close()
+    p.join()
+if __name__ == '__main__':
+    start = time.time()
+    main_get_html()   # 调用方
+    main_parse_html() # 解析html
+    t2=time.time()
+    t3=t2-t1
+    print('总耗时：{}秒'.format(t3))
