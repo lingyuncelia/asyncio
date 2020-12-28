@@ -1,0 +1,41 @@
+import asyncio
+import time
+t1=time.time()
+from asyncio import tasks
+import aiohttp #pip install aiohttp
+from lxml import etree
+for x in range(498232,498242):
+    async def fetch(session,url):
+        async with session.get(url) as response:
+            html=await response.text()
+            return (html)
+    async def parser_content(html):
+        selector = etree.HTML(html)
+        title=str(selector.xpath("//div[@class='read_title']//h1[1]/text()")[0])
+        c1=str(selector.xpath("//div[@class='tuijian']/following-sibling::div[1]/text()"))
+        a=r"['\xa0\xa0\xa0\xa0" #替换 '\xa0\xa0\xa0\xa0
+        c2=c1.replace(a,'')
+        b=r"\n', "
+        c3=c2.replace(b,'')
+        d=r"        ', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n      ']"
+        c4=c3.replace(d,'')
+        e=r"'\xa0\xa0\xa0\xa0"
+        c5=c4.replace(e,'')
+        f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 新书海阁小说网(xinshuhaige.com)”查找最新章节！\n        ', "
+        c6=c5.replace(f,'')
+        print(x,title)
+        with open(title+'.txt',mode='w',encoding='utf-8') as f:
+            f.write(title)
+            f.write('\n')
+            f.write(c6)
+    async def download_content(url):
+        async with aiohttp.ClientSession() as session:
+            html=await fetch(session,url)        
+            await parser_content(html)
+    tasks=[
+        asyncio.ensure_future(download_content('https://www.xinshuhaige.com/34953/{}.html'.format(x)))
+    ]
+loop=asyncio.get_event_loop()
+loop.run_until_complete(asyncio.gather(*tasks))
+t2=time.time()
+print(t2-t1)
