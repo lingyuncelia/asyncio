@@ -20,7 +20,8 @@ async def main():
     await page.waitForXPath(x1, {'timeout': 3000})
     await page.screenshot({'path': './1.jpg'})   # 截图保存路径
     s1='#sb_form_q' #查询内容
-    await page.type(s1, 'Celia')
+    w1=input('pls input:')
+    await page.type(s1, w1)
     s2='#sb_form_go'#搜索
     await page.click(s2)
     x2='/html/body/div[1]/div/div/div[1]/div[1]/ul/li[1]/span[2]/span'#西莉亚
