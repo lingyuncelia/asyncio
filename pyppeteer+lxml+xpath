@@ -1,0 +1,26 @@
+import asyncio, time
+from pyppeteer import launch
+from lxml import etree
+async def main():
+    # 进入无头模式
+    browser = await launch(headless=True, dumpio=True, autoClose=False,args=['--no-sandbox', '--window-size=1920,1080', '--disable-infobars'])   
+    page = await browser.newPage()           # 打开新的标签页
+    await page.setViewport({'width': 1920, 'height': 1080})      # 页面大小一致
+    url='https://cn.bing.com/'
+    await page.goto(url) # 访问主页
+    # evaluate()是执行js的方法，js逆向时如果需要在浏览器环境下执行js代码的话可以利用这个方法
+    # js为设置webdriver的值，防止网站检测
+    await page.evaluateOnNewDocument('() =>{ Object.defineProperties(navigator,''{ webdriver:{ get: () => false } }) }')     
+    page_text = await page.content()   # 获取网页源码
+    print(page_text)
+    time.sleep(1)
+    await page.click('#scpl3')#词典
+    x1='/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div[1]/div[4]' #复仇者
+    await page.waitForXPath(x1, {'timeout': 3000})
+    await page.screenshot({'path': './1.jpg'})   # 截图保存路径
+    html=await page.content()   # 获取网页源码
+    selector = etree.HTML(html)
+    t1=str(selector.xpath('/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div[1]/div[4]/text()')[0])
+    print(t1)
+    await browser.close() #无头关闭浏览器不会报错
+asyncio.get_event_loop().run_until_complete(main()) #调用
