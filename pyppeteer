@@ -1,0 +1,31 @@
+import asyncio
+from pyppeteer import launch
+async def main():
+    # 初始化浏览器对象
+    browser = await launch()
+    # 在浏览器上下文中创建新页面
+    page = await browser.newPage()
+    # 打开目标网址
+    url='https://cn.bing.com/'
+    await page.goto(url)    
+    # 点击指定按钮
+    x1='//*[@id="scpl3"]' #词典
+    await page.waitForXPath(x1, {'timeout': 3000})
+    resp = await page.xpath(x1)
+    print(resp)
+    b1 = await page.xpath(x1)
+    await b1[0].click()
+    # # 读取页面指定位置的文本
+    # x2='/html/body/div[2]/div/div[1]/div[2]/div/div[2]/div[1]/div[4]'
+    # await page.waitForXPath(x2, {'timeout': 3000})
+    # resp = await page.xpath(x2)
+    # # text = await(await resp[0].getProperty('textContent')).jsonValue()
+    # print(resp)
+    # 关闭浏览器对象
+    await browser.close()
+asyncio.get_event_loop().run_until_complete(main())
+
+"""
+运行结果：
+[<pyppeteer.element_handle.ElementHandle object at 0x0000022A04B17AF0>]
+"""
