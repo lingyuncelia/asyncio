@@ -1,0 +1,18 @@
+import asyncio
+from pyppeteer import launch
+import time
+async def main():
+    browser = await launch({'headless': False})
+    page = await browser.newPage()
+    await page.goto('https://www.baidu.com')
+    start = time.time()
+    try:
+        el = await page.waitForXPath('//*[@id="su"]')
+        print(type(el))
+    except:
+        print('errors.TimeoutError')
+    finally:
+        end = time.time()
+        print(end - start)
+    await browser.close()
+asyncio.get_event_loop().run_until_complete(main())
