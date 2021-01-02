@@ -1,0 +1,22 @@
+import asyncio
+from pyppeteer import launch
+
+
+async def main():
+    browser = await launch()
+    page = await browser.newPage()
+    await page.goto('https://www.baidu.com')
+    # 打印页面所有cookies
+    print(await page.cookies())
+    # 删除某个cookie，name为必填
+    await page.deleteCookie({'name': 'H_PS_PSSID'})
+    # 设置cookie，name,value必填
+    await page.setCookie({
+        'name': 'BDUSS',
+        'value': 'AF1C8DF101157E768824DBFAD465FA31:FG=1'
+    })
+    print(await page.cookies())
+    await browser.close()
+
+
+asyncio.get_event_loop().run_until_complete(main())
