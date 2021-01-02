@@ -4,10 +4,10 @@ width, height = 1366, 768
 async def main():
     browser = await launch({
         'headless': False,
-        'args': [f'--window-size={width},{height}']
+        'args': [f'--window-size={width},{height}']  #设置浏览器界面大小
     })
     page = await browser.newPage()
-    await page.setViewport({'width': width, 'height': height})
+    await page.setViewport({'width': width, 'height': height})  #设置页面大小，建议与浏览器界面大小一致
     await page.goto('https://www.baidu.com')
     await page.screenshot({'path': 'baidu.png'})  # 页面截图
     element = await page.J('#lg>img')            # 查找元素
