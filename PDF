@@ -1,0 +1,31 @@
+import asyncio
+from pyppeteer import launch
+width, height = 1366, 768
+async def main():
+    browser = await launch({
+        'headless': True,
+        'args': [f'--window-size={width},{height}']
+    })
+    page = await browser.newPage()
+    await page.setViewport({'width': width, 'height': height})
+    await page.goto('https://cn.bing.com/')
+    await page.screenshot({'path': 'bing.png'})  # 页面截图
+    await page.emulateMedia('screen')
+    await page.pdf({
+        'path': 'bing.pdf',
+        'printBackground': True
+    })
+    element = await page.J('#bLogo')            # 查找元素
+    await element.screenshot({'path': 'element.png'})  # 元素级截图
+    await page.click('#scpl3')
+    x2='/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div[1]/div[4]'
+    await page.waitForXPath(x2, {'timeout': 3000})
+    await page.screenshot({'path': 'bing2.png'})  # 页面截图
+    await page.emulateMedia('screen')
+    await page.pdf({
+        'path': 'bing2.pdf',
+        'printBackground': True
+    })
+    print("done")
+    await browser.close()
+asyncio.get_event_loop().run_until_complete(main())
