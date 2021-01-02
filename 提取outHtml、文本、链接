@@ -1,0 +1,33 @@
+import asyncio
+from pyppeteer import launch
+async def main():
+    browser = await launch()
+    page = await browser.newPage()
+    await page.goto('https://www.baidu.com')
+    s1='#hotsearch-content-wrapper > li:nth-child(1) > a'
+    s2='#hotsearch-content-wrapper'
+    # 获取s1元素本身
+    e1 = await page.Jeval(s1, 'e => e.outerHTML')
+    print('e1:',e1)
+    # 获取s2元素本身
+    e2 = await page.Jeval(s2, 'e => e.outerHTML')
+    print('e2:',e2)
+    # 获取元素中的文本
+    text1 = await page.Jeval(s1, 'el => el.innerText')
+    print('text1:',text1) #获取一个文本
+    # 获取元素中的文本
+    text2 = await page.Jeval(s2, 'el => el.innerText')
+    print('text2:',text2) #获取多个文本
+    # 获取元素中的链接
+    links1 = await page.Jeval(s1, 'el => el.href')
+    print('links1:',links1) # 获取一个链接
+    # 获取元素中的链接
+    links2 = await page.Jeval(s2, 'el => el.href')
+    print('links2:',links2) # 为什么获取0个链接？？？？？？
+    sm=['#hotsearch-content-wrapper > li:nth-child({}) > a'.format(x) for x in range(1,7)]
+    # 获取元素中的链接
+    for s in sm:
+        links = await page.Jeval(s, 'el => el.href')
+        print('links:',links)     
+    await browser.close()
+asyncio.get_event_loop().run_until_complete(main())
