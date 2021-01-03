@@ -4,7 +4,7 @@ def inputme(s,r):    #记事本，输入内容
     f=open(r,'a+')
     f.writelines(s)
     f.write('\n')
-url='https://www.xinshuhaige.com/34953/498232.html'
+url='https://www.xxxx.com/34953/498232.html'
 r=requests.get(url).content
 selector = etree.HTML(r)
 c1=str(selector.xpath("//div[@class='tuijian']/following-sibling::div[1]/text()"))
@@ -16,7 +16,7 @@ d=r"        ', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n\t\t', '\n      ']"
 c4=c3.replace(d,'')
 e=r"'\xa0\xa0\xa0\xa0"
 c5=c4.replace(e,'')
-f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 新书海阁小说网(xinshuhaige.com)”查找最新章节！\n        ', "
+f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 xxxx小说网(xxxx.com)”查找最新章节！\n        ', "
 c6=c5.replace(f,'')
 print(c6)
 """
