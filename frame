@@ -8,6 +8,8 @@ async def main():
     await asyncio.sleep(1)
     frame = page.frames[1]
     print(page.frames)
+    # element = await page.J('iframe')
+    # frame = await element.contentFrame()
     await frame.type('#username', '123456789')
     await frame.type('#j-password', '998765433')
     await asyncio.sleep(5)
