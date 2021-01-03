@@ -21,7 +21,7 @@ for x in range(498232,498242):
         c4=c3.replace(d,'')
         e=r"'\xa0\xa0\xa0\xa0"
         c5=c4.replace(e,'')
-        f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 新书海阁小说网(xinshuhaige.com)”查找最新章节！\n        ', "
+        f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 xxxx小说网(xinshuhaige.com)”查找最新章节！\n        ', "
         c6=c5.replace(f,'')
         print(x,title)
         with open(title+'.txt',mode='w',encoding='utf-8') as f:
@@ -33,7 +33,7 @@ for x in range(498232,498242):
             html=await fetch(session,url)        
             await parser_content(html)
     tasks=[
-        asyncio.ensure_future(download_content('https://www.xinshuhaige.com/34953/{}.html'.format(x)))
+        asyncio.ensure_future(download_content('https://www.xxxx.com/34953/{}.html'.format(x)))
     ]
 loop=asyncio.get_event_loop()
 loop.run_until_complete(asyncio.gather(*tasks))
