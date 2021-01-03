@@ -4,16 +4,16 @@ from lxml import etree
 import aiohttp
 import asyncio
 urls = [
-    'https://www.xinshuhaige.com/34953/498232.html',
-    'https://www.xinshuhaige.com/34953/498233.html',
-    'https://www.xinshuhaige.com/34953/498234.html',
-    'https://www.xinshuhaige.com/34953/498235.html',
-    'https://www.xinshuhaige.com/34953/498236.html',
-    'https://www.xinshuhaige.com/34953/498237.html',
-    'https://www.xinshuhaige.com/34953/498238.html',
-    'https://www.xinshuhaige.com/34953/498239.html',
-    'https://www.xinshuhaige.com/34953/498240.html',
-    'https://www.xinshuhaige.com/34953/498241.html',    
+    'https://www.xxxx.com/34953/498232.html',
+    'https://www.xxxx.com/34953/498233.html',
+    'https://www.xxxx.com/34953/498234.html',
+    'https://www.xxxx.com/34953/498235.html',
+    'https://www.xxxx.com/34953/498236.html',
+    'https://www.xxxx.com/34953/498237.html',
+    'https://www.xxxx.com/34953/498238.html',
+    'https://www.xxxx.com/34953/498239.html',
+    'https://www.xxxx.com/34953/498240.html',
+    'https://www.xxxx.com/34953/498241.html',    
 ]
 htmls = []
 titles = []
