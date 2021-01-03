@@ -8,11 +8,11 @@ def inputme(s,r):    #记事本，输入内容
     f=open(r,'a+')
     f.writelines(s)
     f.write('\n')
-urls=['https://www.xinshuhaige.com/34953/{}.html'.format(x) for x in range(498232,498242)]
+urls=['https://www.xxxx.com/34953/{}.html'.format(x) for x in range(498232,498242)]
 htmls = []
 sem = asyncio.Semaphore(10) # 信号量，控制协程数，防止爬的过快
 '''
-提交请求获取AAAI网页html
+提交请求获取网页html
 '''
 async def get_html(url):
     with(await sem):
@@ -45,7 +45,7 @@ def multi_parse_html(html,cnt):
     c4=c3.replace(d,'')
     e=r"'\xa0\xa0\xa0\xa0"
     c5=c4.replace(e,'')
-    f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 新书海阁小说网(xinshuhaige.com)”查找最新章节！\n        ', "
+    f=r"['\n        \xa0\xa0\xa0\xa0您可以在百度里搜索“他是偏执狂 xxxx小说网(xxxx.com)”查找最新章节！\n        ', "
     c6=c5.replace(f,'')
     inputme(title,'k:/python/title.txt')
     with open(title+'.txt',mode='w',encoding='utf-8') as f:
